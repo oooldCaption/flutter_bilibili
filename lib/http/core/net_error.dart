@@ -1,5 +1,5 @@
-const int loginErrCode = -1001;
-const int authErrCode = -1002;
+const int loginErrCode = 401;
+const int authErrCode = 403;
 
 class NetError implements Exception {
   /// 定义错误状态码

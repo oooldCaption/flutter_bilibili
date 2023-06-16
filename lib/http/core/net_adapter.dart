@@ -26,8 +26,8 @@ class NetResponse<T> {
   String toString() {
     if (data == null) {
       return "null";
-    // } else if (data is Map) {
-    //   return json.encode(data);
+    } else if (data is Map) {
+      return json.encode(data);
     } else {
       return data.toString();
     }

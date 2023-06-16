@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bilibili/http/core/mock_adapter.dart';
 import 'package:flutter_bilibili/http/core/net_adapter.dart';
 import 'package:flutter_bilibili/http/core/net_error.dart';
@@ -20,25 +21,28 @@ class NetTool {
 
     try {
       response = await send(request);
+      printLog(response);
+      print("-----");
     } on NetError catch (e) {
       error = e;
-      // response = e.data;
-      printLog(e.message);
+      response = e.data;
     } catch(e) {
       error = e;
-      // response?.statusMessage =  "未知错误,${error}";
-      printLog(e);
+      response?.statusMessage =  "未知错误,${error}";
+
     }
 
 
     if(response == null){
-      printLog(error);
+      printLog("响应为空: $error");
     }
 
     var out = response?.data;
 
 
     var statusCode = response?.statusCode;
+
+
     switch(statusCode){
       case 200:
         return out;
@@ -50,15 +54,11 @@ class NetTool {
         throw NetError(statusCode ?? -1, out.toString(), data: out);
     }
 
-
-    printLog(out);
-    return out;
   }
 
   Future<dynamic> send<T>(BaseRequest request) async {
-    printLog(request.url());
-    // MockAdapter mockAdapter = MockAdapter();
-    // mockAdapter.send(request);
+    MockAdapter mockAdapter = MockAdapter();
+    return mockAdapter.send(request);
   }
 
   void printLog(log) {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bilibili/http/core/net_error.dart';
 import 'package:flutter_bilibili/http/core/net_tool.dart';
 import 'package:flutter_bilibili/http/request/test_request.dart';
 
@@ -37,8 +38,16 @@ class _MyHomePageState extends State<MyHomePage> {
   void _incrementCounter() async{
     TestRequest request = TestRequest();
     request.add("name", "why");
-    var res = await NetTool.getInstance().fire(request);
-    print(res);
+    try{
+      var res = await NetTool.getInstance().fire(request);
+    } on NeedLogin catch (e) {
+      print(e);
+    } on NeedAuth catch (e) {
+      print(e);
+    } on NetError catch (e) {
+      print(e);
+    }
+
   }
 
   @override

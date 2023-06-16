@@ -11,8 +11,9 @@ class MockAdapter extends NetAdapter{
         Duration(milliseconds: 1000),
             () {
       return NetResponse<T>(
-        data: {"code": 0, "message": "success"},
-        statusCode: 200,
+        // request: request,
+        data: {"code": 401, "message": "success"} as T,
+        statusCode: 401,
       );
     });
   }
