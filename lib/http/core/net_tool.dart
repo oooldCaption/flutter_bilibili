@@ -1,4 +1,6 @@
-import 'package:flutter/cupertino.dart';
+
+import 'package:flutter_bilibili/debug/log_tool.dart';
+import 'package:flutter_bilibili/http/core/dio_daapter.dart';
 import 'package:flutter_bilibili/http/core/mock_adapter.dart';
 import 'package:flutter_bilibili/http/core/net_adapter.dart';
 import 'package:flutter_bilibili/http/core/net_error.dart';
@@ -8,9 +10,7 @@ class NetTool {
   NetTool._();
   static NetTool _instance = NetTool._();
   static NetTool getInstance() {
-    if (_instance == null) {
-      _instance = NetTool._();
-    }
+    _instance ??= NetTool._();
     return _instance;
   }
 
@@ -19,10 +19,9 @@ class NetTool {
     NetResponse? response;
     var error;
 
+
     try {
       response = await send(request);
-      printLog(response);
-      print("-----");
     } on NetError catch (e) {
       error = e;
       response = e.data;
@@ -34,7 +33,7 @@ class NetTool {
 
 
     if(response == null){
-      printLog("响应为空: $error");
+      LogManager().logDebug("响应为空: $error ----$response");
     }
 
     var out = response?.data;
@@ -58,7 +57,8 @@ class NetTool {
 
   Future<dynamic> send<T>(BaseRequest request) async {
     MockAdapter mockAdapter = MockAdapter();
-    return mockAdapter.send(request);
+    NetAdapter adapter = DioAdapter();
+    return adapter.send(request);
   }
 
   void printLog(log) {
